@@ -8,17 +8,37 @@ Original file is located at
 """
 
 import torch
+import torch.nn as nn
 import numpy as np
 
+class CreditScoringModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(10, 16),
+            nn.ReLU(),
+            nn.Linear(16, 1),
+            nn.Sigmoid()
+        )
+
+    def forward(self, x):
+        return self.net(x)
+
+
 def main():
-    model = torch.load("model/model.pt", map_location="cpu")
+    # Загружаем модель
+    model = CreditScoringModel()
+    state_dict = torch.load("model/model.pt", map_location="cpu")
+    model.load_state_dict(state_dict)
     model.eval()
 
+    # Тестовый инференс
     x = torch.randn(1, 10)
     with torch.no_grad():
         y = model(x)
 
     print("Inference OK, output:", y.numpy())
+
 
 if __name__ == "__main__":
     main()
