@@ -1,6 +1,15 @@
-{\rtf1\ansi\ansicpg1251\cocoartf2867
-\cocoatextscaling0\cocoaplatform0{\fonttbl}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-}
+import torch
+import numpy as np
+
+def main():
+    model = torch.load("model/model.pt", map_location="cpu")
+    model.eval()
+
+    x = torch.randn(1, 10)
+    with torch.no_grad():
+        y = model(x)
+
+    print("Inference OK, output:", y.numpy())
+
+if __name__ == "__main__":
+    main()
