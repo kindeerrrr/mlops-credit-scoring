@@ -14,7 +14,7 @@ import numpy as np
 class CreditScoringModel(nn.Module):
     def __init__(self):
         super().__init__()
-        self.net = nn.Sequential(
+        self.model = nn.Sequential(
             nn.Linear(10, 16),
             nn.ReLU(),
             nn.Linear(16, 1),
@@ -22,14 +22,16 @@ class CreditScoringModel(nn.Module):
         )
 
     def forward(self, x):
-        return self.net(x)
+        return self.model(x)
 
 
 def main():
-    # Загружаем модель
     model = CreditScoringModel()
+
+    # Загружаем state_dict
     state_dict = torch.load("model/model.pt", map_location="cpu")
     model.load_state_dict(state_dict)
+
     model.eval()
 
     # Тестовый инференс
